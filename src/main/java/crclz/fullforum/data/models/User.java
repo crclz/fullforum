@@ -1,4 +1,6 @@
-package crclz.fullforum.data;
+package crclz.fullforum.data.models;
+
+import crclz.fullforum.controllers.UsersController;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,7 +18,9 @@ public class User {
     }
 
     public User(long id, String username, String password) {
-
+        this.id = id;
+        setUsername(username);
+        setPassword(password);
     }
 
     public Long getId() {
