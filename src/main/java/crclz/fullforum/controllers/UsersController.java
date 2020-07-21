@@ -24,7 +24,7 @@ public class UsersController {
 
 
     @PostMapping
-    public IdDto CreateUser(@Valid @RequestBody CreateUserModel model) {
+    public IdDto createUser(@Valid @RequestBody CreateUserModel model) {
         var userInDb = userRepository.findByUsername(model.username);
         if (userInDb != null) {
             throw new BadRequestException("UniqueViolation", "Username already exist");
@@ -33,7 +33,7 @@ public class UsersController {
         var user = new User(snowflake.nextId(), model.username, model.password);
         userRepository.save(user);
 
-        return new IdDto(snowflake.nextId());
+        return new IdDto(user.getId());
     }
 
 }
