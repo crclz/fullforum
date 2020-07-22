@@ -1,9 +1,12 @@
 package crclz.fullforum.controllers;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import crclz.fullforum.BaseTest;
 import crclz.fullforum.TestServiceConfiguration;
 import crclz.fullforum.data.models.User;
 import crclz.fullforum.data.repos.UserRepository;
+import crclz.fullforum.dto.in.LoginModel;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -23,6 +26,7 @@ import org.springframework.test.web.servlet.RequestBuilder.*;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
@@ -51,6 +55,9 @@ public class AccessControllerTest {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    AccessController accessController;
 
     @Test
     void me_return_null_when_not_login() throws Exception {
@@ -86,5 +93,40 @@ public class AccessControllerTest {
                 .andExpect(cookie().value("password", nullValue()));
     }
 
+    @Autowired
+    private ObjectMapper mapper;
 
+    @Test
+    void login_return_bad_request_when_username_not_exist() throws Exception {
+        var loginModel = new LoginModel("asdas", "asdasdasda");
+        mockMvc.perform(post("/access/login").contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(loginModel)))
+                .andExpect(status().isBadRequest())
+                .andExpect(status().reason(containsStringIgnoringCase("username")));
+    }
+
+    @Test
+    void login_return_bad_request_when_password_is_wrong() throws Exception {
+        var user = new User(1, "aaa", "sd122daas");
+        userRepository.save(user);
+
+        var loginModel = new LoginModel("aaa", "asdasdasda");
+        mockMvc.perform(post("/access/login")
+                .content(mapper.writeValueAsString(loginModel)).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(status().reason(containsStringIgnoringCase("password")));
+    }
+
+    @Test
+    void login_return_ok_and_set_cookie_when_all_ok() throws Exception {
+        var user = new User(1, "aaa", "sd122daas");
+        userRepository.save(user);
+
+        var loginModel = new LoginModel(user.getUsername(), user.getPassword());
+        mockMvc.perform(post("/access/login")
+                .content(mapper.writeValueAsString(loginModel)).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(cookie().value("username", user.getUsername()))
+                .andExpect(cookie().value("password", user.getPassword()));
+    }
 }
