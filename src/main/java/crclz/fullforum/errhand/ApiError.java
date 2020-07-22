@@ -1,4 +1,4 @@
-package crclz.fullforum.controllers.errhand;
+package crclz.fullforum.errhand;
 
 public class ApiError {
     public String code;

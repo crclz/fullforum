@@ -1,9 +1,9 @@
 package crclz.fullforum.controllers;
 
 import crclz.fullforum.BaseTest;
-import crclz.fullforum.controllers.dtos.CreateUserModel;
-import crclz.fullforum.controllers.errhand.BadRequestException;
-import crclz.fullforum.data.Snowflake;
+import crclz.fullforum.dtos.CreateUserModel;
+import crclz.fullforum.errhand.BadRequestException;
+import crclz.fullforum.services.Snowflake;
 import crclz.fullforum.data.models.User;
 import crclz.fullforum.data.repos.UserRepository;
 import org.junit.jupiter.api.Test;

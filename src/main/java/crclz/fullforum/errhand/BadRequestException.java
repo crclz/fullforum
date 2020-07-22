@@ -1,4 +1,4 @@
-package crclz.fullforum.controllers.errhand;
+package crclz.fullforum.errhand;
 
 public class BadRequestException extends RuntimeException {
     private final String code;

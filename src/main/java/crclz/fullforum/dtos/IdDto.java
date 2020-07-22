@@ -1,4 +1,4 @@
-package crclz.fullforum.controllers.dtos;
+package crclz.fullforum.dtos;
 
 public class IdDto {
     public long id;
