@@ -1,18 +1,13 @@
 package crclz.fullforum.errhand;
 
-public class BadRequestException extends RuntimeException {
-    private final String code;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
-    public BadRequestException(String code, String message) {
-        super(message);
+public class BadRequestException extends ResponseStatusException {
+    public ErrorCode code;
+
+    public BadRequestException(ErrorCode code, String message) {
+        super(HttpStatus.BAD_REQUEST, message);
         this.code = code;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public ApiError toApiError() {
-        return new ApiError(getCode(), getMessage());
     }
 }
