@@ -1,17 +1,16 @@
 package crclz.fullforum.controllers;
 
 import crclz.fullforum.BaseTest;
+import crclz.fullforum.dependency.FakeAuth;
 import crclz.fullforum.dtos.CreateUserModel;
+import crclz.fullforum.dtos.PatchUserModel;
 import crclz.fullforum.errhand.BadRequestException;
+import crclz.fullforum.errhand.UnauthorizedException;
 import crclz.fullforum.services.Snowflake;
 import crclz.fullforum.data.models.User;
 import crclz.fullforum.data.repos.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.web.servlet.MockMvc;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -25,6 +24,9 @@ class UsersControllerTest extends BaseTest {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    FakeAuth auth;
 
     @Test
     void createUser_throw_Model_when_model_is_invalid() {
@@ -70,5 +72,14 @@ class UsersControllerTest extends BaseTest {
         assertEquals(userId, userInDb.getId());
         assertEquals(model.username, userInDb.getUsername());
         assertEquals(model.password, userInDb.getPassword());
+    }
+
+    @Test
+    void A() {
+        auth.realUserId = -1;
+        var model = new PatchUserModel();
+        model.password = "asdadsa";
+
+        assertThrows(UnauthorizedException.class, () -> usersController.patchUser(model, 1));
     }
 }

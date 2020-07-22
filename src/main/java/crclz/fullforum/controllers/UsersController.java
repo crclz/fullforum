@@ -4,6 +4,7 @@ import crclz.fullforum.dtos.CreateUserModel;
 import crclz.fullforum.dtos.IdDto;
 import crclz.fullforum.dtos.PatchUserModel;
 import crclz.fullforum.errhand.*;
+import crclz.fullforum.services.IAuth;
 import crclz.fullforum.services.Snowflake;
 import crclz.fullforum.data.models.User;
 import crclz.fullforum.data.repos.UserRepository;
@@ -27,6 +28,9 @@ public class UsersController {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    IAuth auth;
+
 
     @PostMapping
     public IdDto createUser(@Valid @RequestBody CreateUserModel model) {
@@ -43,6 +47,9 @@ public class UsersController {
 
     @PatchMapping("{id}")
     public void patchUser(@Valid @RequestBody PatchUserModel model, @PathVariable long id) {
+        if (!auth.isLoggedIn()) {
+            throw new UnauthorizedException();
+        }
         var user = userRepository.findById(id).orElse(null);
         if (user == null) {
             throw new NotFoundException();

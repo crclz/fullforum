@@ -48,4 +48,8 @@ public class User extends RootEntity {
         }
         this.password = password;
     }
+
+    public boolean checkPassword(String passwordToCheck) {
+        return password.equals(passwordToCheck);
+    }
 }
