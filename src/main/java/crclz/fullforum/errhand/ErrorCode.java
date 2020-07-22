@@ -1,5 +1,7 @@
 package crclz.fullforum.errhand;
 
 public enum ErrorCode {
-    UniqueViolation
+    UniqueViolation,
+    UsernameNotExist,
+    WrongPassword,
 }

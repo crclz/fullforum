@@ -9,6 +9,7 @@ import org.springframework.web.context.annotation.RequestScope;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
@@ -16,27 +17,23 @@ public class Auth implements IAuth {
     private long userId = -1;
     private boolean loaded = false;
 
-    HttpServletRequest request;
-    UserRepository userRepository;
+    private HttpServletRequest request;
+    private UserRepository userRepository;
+    private HttpServletResponse response;
 
-    public Auth(HttpServletRequest request, UserRepository userRepository) {
-        if (request == null) {
-            throw new NullPointerException();
-        }
-        if (userRepository == null) {
-            throw new NullPointerException();
-        }
+    public Auth(HttpServletRequest request, HttpServletResponse response, UserRepository userRepository) {
         this.request = request;
+        this.response = response;
         this.userRepository = userRepository;
     }
 
-    private void load() {
+    private boolean innerload() {
         if (loaded) {
             throw new IllegalStateException();
         }
         var cookies = request.getCookies();
         if (cookies == null) {
-            return;
+            return false;
         }
         var username = Arrays.stream(cookies)
                 .filter(p -> p.getName().equals("username"))
@@ -49,23 +46,33 @@ public class Auth implements IAuth {
                 .findFirst().orElse(null);
 
         if (username == null || password == null) {
-            return;
+            return false;
         }
 
         var user = userRepository.findByUsername(username);
 
         if (user == null) {
-            return;
+            return false;
         }
 
         if (!user.checkPassword(password)) {
-            return;
+            return false;
         }
 
         // username and password matches
         userId = user.getId();
 
+        return true;
+    }
+
+    private void load() {
+        var success = innerload();
         loaded = true;
+        // if not success, clear some cookie
+        if (!success) {
+            response.addCookie(new Cookie("username", null));
+            response.addCookie(new Cookie("password", null));
+        }
     }
 
     @Override

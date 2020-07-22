@@ -44,7 +44,7 @@ import static org.junit.jupiter.api.Assertions.*;
 // Do not fake authentication service
 //@ContextConfiguration(classes = TestServiceConfiguration.class)
 @AutoConfigureMockMvc
-public class AccessControllerTest  {
+public class AccessControllerTest {
 
     @Autowired
     MockMvc mockMvc;
@@ -75,5 +75,16 @@ public class AccessControllerTest  {
                 .andExpect(jsonPath("$.username", equalTo(user.getUsername())))
                 .andExpect(jsonPath("$.id", equalTo(user.getId().toString())));
     }
+
+    @Test
+    void me_clear_cookie_when_wrong_cookie_username_and_password() throws Exception {
+        var usernameCookie = new Cookie("username", "asddad");
+        var passwordCookie = new Cookie("password", "adasdad");
+
+        mockMvc.perform(get("/access/me").cookie(usernameCookie, passwordCookie))
+                .andExpect(cookie().value("username", nullValue()))
+                .andExpect(cookie().value("password", nullValue()));
+    }
+
 
 }

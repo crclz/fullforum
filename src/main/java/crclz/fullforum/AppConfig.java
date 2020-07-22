@@ -6,15 +6,18 @@ import crclz.fullforum.services.IAuth;
 import org.hibernate.cfg.NotYetImplementedException;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.context.annotation.RequestScope;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 @Configuration
 public class AppConfig {
 
     @Bean
-    public IAuth IAuth(HttpServletRequest request, UserRepository userRepository) {
-        return new Auth(request, userRepository);
+    @RequestScope
+    public IAuth IAuth(HttpServletRequest request, HttpServletResponse response, UserRepository userRepository) {
+        return new Auth(request, response, userRepository);
     }
 
 }
