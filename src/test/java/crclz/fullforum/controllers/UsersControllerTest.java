@@ -2,8 +2,8 @@ package crclz.fullforum.controllers;
 
 import crclz.fullforum.BaseTest;
 import crclz.fullforum.dependency.FakeAuth;
-import crclz.fullforum.dtos.CreateUserModel;
-import crclz.fullforum.dtos.PatchUserModel;
+import crclz.fullforum.dto.in.CreateUserModel;
+import crclz.fullforum.dto.in.PatchUserModel;
 import crclz.fullforum.errhand.BadRequestException;
 import crclz.fullforum.errhand.UnauthorizedException;
 import crclz.fullforum.services.Snowflake;

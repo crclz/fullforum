@@ -16,23 +16,34 @@ public class Auth implements IAuth {
     private long userId = -1;
     private boolean loaded = false;
 
-    @Autowired
     HttpServletRequest request;
-
-    @Autowired
     UserRepository userRepository;
+
+    public Auth(HttpServletRequest request, UserRepository userRepository) {
+        if (request == null) {
+            throw new NullPointerException();
+        }
+        if (userRepository == null) {
+            throw new NullPointerException();
+        }
+        this.request = request;
+        this.userRepository = userRepository;
+    }
 
     private void load() {
         if (loaded) {
             throw new IllegalStateException();
         }
-
-        var username = Arrays.stream(request.getCookies())
+        var cookies = request.getCookies();
+        if (cookies == null) {
+            return;
+        }
+        var username = Arrays.stream(cookies)
                 .filter(p -> p.getName().equals("username"))
                 .map(Cookie::getValue)
                 .findFirst().orElse(null);
 
-        var password = Arrays.stream(request.getCookies())
+        var password = Arrays.stream(cookies)
                 .filter(p -> p.getName().equals("password"))
                 .map(Cookie::getValue)
                 .findFirst().orElse(null);

@@ -1,8 +1,8 @@
 package crclz.fullforum.controllers;
 
-import crclz.fullforum.dtos.CreateUserModel;
-import crclz.fullforum.dtos.IdDto;
-import crclz.fullforum.dtos.PatchUserModel;
+import crclz.fullforum.dto.in.CreateUserModel;
+import crclz.fullforum.dto.out.IdDto;
+import crclz.fullforum.dto.in.PatchUserModel;
 import crclz.fullforum.errhand.*;
 import crclz.fullforum.services.IAuth;
 import crclz.fullforum.services.Snowflake;
@@ -11,9 +11,6 @@ import crclz.fullforum.data.repos.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.HttpStatusCodeException;
-import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
 

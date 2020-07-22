@@ -14,7 +14,6 @@ import javax.transaction.Transactional;
 @Rollback
 @Transactional
 @SpringBootTest
-//@Import(TestServiceConfiguration.class)
 @ContextConfiguration(classes = TestServiceConfiguration.class)
 public class BaseTest {
 }
