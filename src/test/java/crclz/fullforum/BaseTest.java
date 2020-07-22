@@ -1,5 +1,6 @@
 package crclz.fullforum;
 
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
@@ -15,5 +16,6 @@ import javax.transaction.Transactional;
 @Transactional
 @SpringBootTest
 @ContextConfiguration(classes = TestServiceConfiguration.class)
+@AutoConfigureMockMvc
 public class BaseTest {
 }

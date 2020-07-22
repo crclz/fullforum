@@ -1,9 +1,6 @@
 package crclz.fullforum.controllers;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import crclz.fullforum.BaseTest;
-import crclz.fullforum.TestServiceConfiguration;
 import crclz.fullforum.data.models.User;
 import crclz.fullforum.data.repos.UserRepository;
 import crclz.fullforum.dto.in.LoginModel;
@@ -11,27 +8,13 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.test.annotation.Rollback;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
-
-import crclz.fullforum.BaseTest;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.RequestBuilder.*;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
 import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
-
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
-
-import java.net.URI;
 
 import static org.hamcrest.Matchers.*;
 

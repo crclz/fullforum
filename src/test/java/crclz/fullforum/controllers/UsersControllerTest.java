@@ -1,5 +1,7 @@
 package crclz.fullforum.controllers;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import crclz.fullforum.BaseTest;
 import crclz.fullforum.dependency.FakeAuth;
 import crclz.fullforum.dto.in.CreateUserModel;
@@ -11,8 +13,22 @@ import crclz.fullforum.data.models.User;
 import crclz.fullforum.data.repos.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.PatchMapping;
+
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
 import static org.junit.jupiter.api.Assertions.*;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+import static org.hamcrest.Matchers.*;
+
 
 class UsersControllerTest extends BaseTest {
 
@@ -27,6 +43,9 @@ class UsersControllerTest extends BaseTest {
 
     @Autowired
     FakeAuth auth;
+
+    @Autowired
+    MockMvc mockMvc;
 
     @Test
     void createUser_throw_Model_when_model_is_invalid() {
@@ -74,12 +93,36 @@ class UsersControllerTest extends BaseTest {
         assertEquals(model.password, userInDb.getPassword());
     }
 
-    @Test
-    void A() {
-        auth.realUserId = -1;
-        var model = new PatchUserModel();
-        model.password = "asdadsa";
+    @Autowired
+    private ObjectMapper mapper;
 
+    @Test
+    void patchUser_return_bad_request_when_model_invalid() throws Exception {
+        var model = new PatchUserModel("o234a");
+
+        var r = mockMvc.perform(
+                patch("/users/{id}", 1)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(model)))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andReturn();
+        assertThat(r.getResolvedException()).isExactlyInstanceOf(MethodArgumentNotValidException.class);
+    }
+
+    @Test
+    void patchUser_return_unauthorized_when_not_login() throws NoSuchMethodException {
+        var model = new PatchUserModel("o234a6");
         assertThrows(UnauthorizedException.class, () -> usersController.patchUser(model, 1));
+    }
+
+    @Test
+    void patchUser_return_forbidden_when_target_user_is_not_self() {
+
+    }
+
+    @Test
+    void patchUser_return_ok_and_changes_db_when_all_ok() {
+
     }
 }
