@@ -1,6 +1,7 @@
 package crclz.fullforum.controllers;
 
 import crclz.fullforum.BaseTest;
+import org.aspectj.bridge.ICommand;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -12,7 +13,13 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 
+import java.io.File;
+import java.io.FilenameFilter;
 import java.net.URI;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.hamcrest.Matchers.*;
 
@@ -57,5 +64,42 @@ public class InnerContractTest extends BaseTest {
                 post(new URI("/users/report-error?status=NOT_FOUND"))
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void input_model_convert_string_to_long_test() throws Exception {
+        mockMvc.perform(post("/internal/long-test").contentType(MediaType.APPLICATION_JSON)
+                .content("{\"a\":\"9223372036854775807\"}"))
+                .andExpect(status().isOk())
+                .andExpect(content().string("9223372036854775807"));
+    }
+
+    @Test
+    void out_dto_not_having_long() throws Exception {
+        String packageName = "crclz.fullforum.dto.out";
+        List<Class<?>> classList = new ArrayList<>();
+        URL root = Thread.currentThread().getContextClassLoader().getResource(packageName.replace(".", "/"));
+
+        // Filter .class files.
+        File[] files = new File(root.getFile()).listFiles((dir, name) -> name.endsWith(".class"));
+
+        // Find classes implementing ICommand.
+        for (File file : files) {
+            String className = file.getName().replaceAll(".class$", "");
+            Class<?> cls = Class.forName(packageName + "." + className);
+            classList.add(cls);
+        }
+
+        for (var c : classList) {
+            var cnt = Arrays.stream(c.getFields())
+                    .filter(f -> f.getType().equals(Long.class) || f.getType().equals(Long.TYPE))
+                    .count();
+            if (cnt != 0) {
+                var message = String.format(
+                        "%s contains Long or long. long will suffer precision loss in javascript.",
+                        c.getName());
+                throw new Exception(message);
+            }
+        }
     }
 }
