@@ -80,7 +80,7 @@ class UsersControllerTest extends BaseTest {
         // Assert
 
         assertNotNull(idw);
-        var userId = idw.id;
+        var userId = idw.getLongId();
 
         // Check db
         userRepository.flush();
@@ -111,7 +111,7 @@ class UsersControllerTest extends BaseTest {
     }
 
     @Test
-    void patchUser_return_unauthorized_when_not_login() throws NoSuchMethodException {
+    void patchUser_return_unauthorized_when_not_login() {
         var model = new PatchUserModel("o234a6");
         assertThrows(UnauthorizedException.class, () -> usersController.patchUser(model, 1));
     }

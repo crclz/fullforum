@@ -1,9 +1,13 @@
 package crclz.fullforum.dto.out;
 
 public class IdDto {
-    public long id;
+    public String id;
 
-    public IdDto(long id) {
-        this.id = id;
+    public IdDto(Long id) {
+        this.id = id.toString();
+    }
+
+    public long getLongId() {
+        return Long.parseLong(id);
     }
 }

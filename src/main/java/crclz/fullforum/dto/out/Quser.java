@@ -1,17 +1,23 @@
 package crclz.fullforum.dto.out;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import crclz.fullforum.data.models.User;
 
 public class Quser {
-    public long id;
+    public String id;
     public String username;
 
-    public Quser(long id, String username) {
-        this.id = id;
+    public Quser(Long id, String username) {
+        this.id = id.toString();
         this.username = username;
     }
 
     public static Quser convert(User user) {
         return user == null ? null : new Quser(user.getId(), user.getUsername());
+    }
+
+    public long getLongId() {
+        return Long.parseLong(id);
     }
 }
