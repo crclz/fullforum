@@ -1,12 +1,13 @@
 package crclz.fullforum.controllers;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import crclz.fullforum.BaseTest;
 import crclz.fullforum.dependency.FakeAuth;
 import crclz.fullforum.dto.in.CreateUserModel;
 import crclz.fullforum.dto.in.PatchUserModel;
 import crclz.fullforum.errhand.BadRequestException;
+import crclz.fullforum.errhand.ForbidException;
+import crclz.fullforum.errhand.NotFoundException;
 import crclz.fullforum.errhand.UnauthorizedException;
 import crclz.fullforum.services.Snowflake;
 import crclz.fullforum.data.models.User;
@@ -16,7 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.context.annotation.RequestScope;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -26,8 +27,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.junit.jupiter.api.Assertions.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
-
-import static org.hamcrest.Matchers.*;
 
 
 class UsersControllerTest extends BaseTest {
@@ -111,18 +110,47 @@ class UsersControllerTest extends BaseTest {
     }
 
     @Test
-    void patchUser_return_unauthorized_when_not_login() {
+    void patchUser_throw_unauthorized_when_not_login() {
         var model = new PatchUserModel("o234a6");
         assertThrows(UnauthorizedException.class, () -> usersController.patchUser(model, 1));
     }
 
     @Test
-    void patchUser_return_forbidden_when_target_user_is_not_self() {
+    void patchUser_return_not_found_when_target_user_not_exist() {
+        // Arrange
+        auth.setRealUserId(1);
 
+        // Act & Assert
+        var model = new PatchUserModel("o234a6");
+        assertThrows(NotFoundException.class, () -> usersController.patchUser(model, 2));
+    }
+
+    @Test
+    @RequestScope
+    void patchUser_throw_forbidden_when_target_user_is_not_self() {
+        // Arrange
+        auth.setRealUserId(1);
+        var targetUser = new User(2, "asdasda", "asdsadsa");
+        userRepository.save(targetUser);
+
+        // Act & Assert
+        var model = new PatchUserModel("o234a6");
+        assertThrows(ForbidException.class, () -> usersController.patchUser(model, 2));
     }
 
     @Test
     void patchUser_return_ok_and_changes_db_when_all_ok() {
+        // Arrange
+        auth.setRealUserId(1);
+        var targetUser = new User(1, "asdasda", "asdsadsa");
+        userRepository.save(targetUser);
 
+        // Act
+        var model = new PatchUserModel("o234a6");
+        usersController.patchUser(model, auth.userId());
+
+        // Assert
+        var userInDatabase = userRepository.getOne(auth.userId());
+        assertThat(userInDatabase.getPassword()).isEqualTo(model.password);
     }
 }

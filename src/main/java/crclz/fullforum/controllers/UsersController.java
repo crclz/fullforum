@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-
 @RestController
 @RequestMapping("users")
 public class UsersController {
@@ -51,6 +50,12 @@ public class UsersController {
         if (user == null) {
             throw new NotFoundException();
         }
+        if (user.getId() != auth.userId()) {
+            throw new ForbidException();
+        }
+        // check ok
+        user.setPassword(model.password);
+        userRepository.save(user);
     }
 
     @PostMapping("report-error")
