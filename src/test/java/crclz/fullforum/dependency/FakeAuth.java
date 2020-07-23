@@ -4,7 +4,16 @@ import crclz.fullforum.services.IAuth;
 
 public class FakeAuth implements IAuth {
 
-    public long realUserId = -1;
+    private long realUserId = -1;
+
+    public long getRealUserId() {
+        return realUserId;
+    }
+
+    public void setRealUserId(long realUserId) {
+        this.realUserId = realUserId;
+    }
+
 
     @Override
     public boolean isLoggedIn() {
