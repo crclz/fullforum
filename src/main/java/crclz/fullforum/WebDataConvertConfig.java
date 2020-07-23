@@ -12,7 +12,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.List;
 
-@EnableWebMvc
+// commenting this makes swagger 2.x.x work
+//@EnableWebMvc
 @Configuration
 public class WebDataConvertConfig implements WebMvcConfigurer {
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
