@@ -1,5 +1,6 @@
 package crclz.fullforum.data;
 
+import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 

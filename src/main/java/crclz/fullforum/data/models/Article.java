@@ -2,6 +2,9 @@ package crclz.fullforum.data.models;
 
 import crclz.fullforum.data.RootEntity;
 
+import javax.persistence.Entity;
+
+@Entity
 public class Article extends RootEntity {
 
     private String title;
