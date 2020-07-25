@@ -9,7 +9,7 @@ public class Article extends RootEntity {
 
     private String title;
     private String text;
-    private Long userId;
+    private long userId;
 
     protected Article() {
     }
@@ -26,6 +26,12 @@ public class Article extends RootEntity {
     }
 
     public void setTitle(String title) {
+        if (title == null) {
+            throw new NullPointerException();
+        }
+        if (title.length() == 0) {
+            throw new IllegalArgumentException();
+        }
         this.title = title;
     }
 
@@ -34,14 +40,20 @@ public class Article extends RootEntity {
     }
 
     public void setText(String text) {
+        if (text == null) {
+            throw new NullPointerException();
+        }
+        if (title.length() == 0) {
+            throw new IllegalArgumentException();
+        }
         this.text = text;
     }
 
-    public Long getUserId() {
+    public long getUserId() {
         return userId;
     }
 
-    public void setUserId(Long userId) {
+    public void setUserId(long userId) {
         this.userId = userId;
     }
 }
