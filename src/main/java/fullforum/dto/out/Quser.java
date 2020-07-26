@@ -1,21 +1,26 @@
 package fullforum.dto.out;
 
 import fullforum.data.models.User;
+import lombok.Data;
+import org.modelmapper.ModelMapper;
 
+@Data// ModelMapper需要getter和setter
 public class Quser {
-    public String id;
+    public long id;
     public String username;
 
-    public Quser(Long id, String username) {
-        this.id = id.toString();
-        this.username = username;
+    public static Quser convert(User user, ModelMapper mapper) {
+        if (user == null) {
+            return null;
+        }
+
+        return mapper.map(user, Quser.class);
     }
 
-    public static Quser convert(User user) {
-        return user == null ? null : new Quser(user.getId(), user.getUsername());
-    }
+    public static void main(String[] args) {
+        var m = new ModelMapper();
 
-    public long getLongId() {
-        return Long.parseLong(id);
+        var user = new User(1, "aaa", "asdsadsad");
+        var q = m.map(user, Quser.class);
     }
 }

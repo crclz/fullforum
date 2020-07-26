@@ -6,6 +6,7 @@ import fullforum.data.repos.UserRepository;
 import fullforum.dto.in.LoginModel;
 import fullforum.dto.out.Quser;
 import fullforum.errhand.ErrorCode;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,6 +25,8 @@ public class AccessController {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    ModelMapper modelMapper;
 
     @GetMapping("me")
     public Quser me() {
@@ -33,7 +36,7 @@ public class AccessController {
 
         var user = userRepository.findById(auth.userId()).orElseThrow();
 
-        return Quser.convert(user);
+        return Quser.convert(user, modelMapper);
     }
 
     @PostMapping("login")

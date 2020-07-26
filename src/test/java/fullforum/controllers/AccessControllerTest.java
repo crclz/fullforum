@@ -61,7 +61,7 @@ public class AccessControllerTest {
         mockMvc.perform(get("/access/me").cookie(usernameCookie, passwordCookie))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.username", equalTo(user.getUsername())))
-                .andExpect(jsonPath("$.id", equalTo(user.getId().toString())));
+                .andExpect(jsonPath("$.id", hasToString(user.getId().toString())));
     }
 
     @Test

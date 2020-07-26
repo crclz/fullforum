@@ -1,20 +1,24 @@
 package fullforum.dto.out;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import fullforum.data.models.Article;
+import lombok.Data;
 
+@Data
 public class QArticle {
-    public String id;
+    public long id;
     public String title;
     public String text;
-    public String userId;
+    public long userId;
 
     public Quser user;
 
-    public QArticle(Long id, String title, String text, Long userId, Quser user) {
-        this.id = id.toString();
+    public QArticle(long id, String title, String text, long userId, Quser user) {
+        this.id = id;
         this.title = title;
         this.text = text;
-        this.userId = userId.toString();
+        this.userId = userId;
 
         this.user = user;
     }

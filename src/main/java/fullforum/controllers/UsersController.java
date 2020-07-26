@@ -9,6 +9,7 @@ import fullforum.services.Snowflake;
 import fullforum.dto.in.CreateUserModel;
 import fullforum.dto.in.PatchUserModel;
 import fullforum.data.models.User;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -79,6 +80,9 @@ public class UsersController {
         }
     }
 
+    @Autowired
+    ModelMapper modelMapper;
+
     @GetMapping("{id}")
     public Quser getUserById(@PathVariable long id) {
         var user = userRepository.findById(id).orElse(null);
@@ -86,6 +90,6 @@ public class UsersController {
             return null;
         }
 
-        return Quser.convert(user);
+        return Quser.convert(user, modelMapper);
     }
 }

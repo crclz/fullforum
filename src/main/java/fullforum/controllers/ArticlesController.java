@@ -15,6 +15,7 @@ import fullforum.errhand.UnauthorizedException;
 import fullforum.services.IAuth;
 import fullforum.services.Snowflake;
 import org.hibernate.cfg.NotYetImplementedException;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
@@ -114,6 +115,9 @@ public class ArticlesController {
     @PersistenceContext
     EntityManager entityManager;
 
+    @Autowired
+    ModelMapper modelMapper;
+
     @GetMapping
     public List<QArticle> getArticles(
             @RequestParam Long userId,
@@ -140,7 +144,7 @@ public class ArticlesController {
             var article = (Article) objs[0];
             var user = (User) objs[1];
 
-            var qarticle = QArticle.convert(article, Quser.convert(user));
+            var qarticle = QArticle.convert(article, Quser.convert(user, modelMapper));
             data.add(qarticle);
         }
 

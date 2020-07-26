@@ -15,6 +15,7 @@ import fullforum.errhand.NotFoundException;
 import fullforum.errhand.UnauthorizedException;
 import fullforum.services.Snowflake;
 import org.junit.jupiter.api.Test;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -57,7 +58,7 @@ public class ArticlesControllerTest extends BaseTest {
 
         // Act
         var idDto = articlesController.createArticle(model);
-        var articleId = idDto.getLongId();
+        var articleId = idDto.id;
 
         // Assert
         var article = articleRepository.getOne(articleId);
@@ -174,10 +175,10 @@ public class ArticlesControllerTest extends BaseTest {
 
         // Act
         var articleInfo = articlesController.getArticleById(1);
-        assertThat(articleInfo.id).isEqualTo(article.getId().toString());
+        assertThat(articleInfo.id).isEqualTo(article.getId());
         assertThat(articleInfo.title).isEqualTo(article.getTitle());
         assertThat(articleInfo.text).isEqualTo(article.getText());
-        assertThat(articleInfo.userId).isEqualTo(Long.toString(article.getUserId()));
+        assertThat(articleInfo.userId).isEqualTo(article.getUserId());
     }
 
     // endregion
@@ -204,11 +205,11 @@ public class ArticlesControllerTest extends BaseTest {
         var articles = articlesController.getArticles(a.getId(), null, 0, 10);
         assertThat(articles).hasSize(2);
 
-        var articleA1 = articles.stream().filter(p -> p.id.equals(a1.getId().toString()))
+        var articleA1 = articles.stream().filter(p -> p.id == a1.getId())
                 .findFirst().orElse(null);
         assertQArticleConsistsWith(articleA1, a1, a);
 
-        var articleA2 = articles.stream().filter(p -> p.id.equals(a2.getId().toString()))
+        var articleA2 = articles.stream().filter(p -> p.id == a2.getId())
                 .findFirst().orElse(null);
         assertQArticleConsistsWith(articleA2, a2, a);
 
@@ -219,11 +220,14 @@ public class ArticlesControllerTest extends BaseTest {
         assertQArticleConsistsWith(ar0, a2, a);
     }
 
+    @Autowired
+    ModelMapper modelMapper;
+
     void assertQArticleConsistsWith(QArticle q, Article article, User user) {
         // TODO: QUser.convert should be tested
         // TODO: QArticle.convert should be tested
         assertThat(q).usingRecursiveComparison()
-                .isEqualTo(QArticle.convert(article, Quser.convert(user)));
+                .isEqualTo(QArticle.convert(article, Quser.convert(user, modelMapper)));
 
     }
 

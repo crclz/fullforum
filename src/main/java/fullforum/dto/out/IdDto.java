@@ -1,13 +1,9 @@
 package fullforum.dto.out;
 
 public class IdDto {
-    public String id;
+    public long id;
 
-    public IdDto(Long id) {
-        this.id = id.toString();
-    }
-
-    public long getLongId() {
-        return Long.parseLong(id);
+    public IdDto(long id) {
+        this.id = id;
     }
 }

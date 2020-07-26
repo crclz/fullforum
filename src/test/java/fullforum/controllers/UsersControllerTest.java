@@ -80,7 +80,7 @@ class UsersControllerTest extends BaseTest {
         // Assert
 
         assertNotNull(idw);
-        var userId = idw.getLongId();
+        var userId = idw.id;
 
         // Check db
         userRepository.flush();
@@ -171,7 +171,7 @@ class UsersControllerTest extends BaseTest {
 
         // Act
         var userInfo = usersController.getUserById(1);
-        assertThat(userInfo.getLongId()).isEqualTo(1);
+        assertThat(userInfo.id).isEqualTo(1);
         assertThat(userInfo.username).isEqualTo(userEntity.getUsername());
     }
 

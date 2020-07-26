@@ -19,10 +19,13 @@ public class Snowflake {
 
     /**
      * 每一部分占用的位数
+     * 一共53位（为了兼容js）
+     * <p>
+     * 时间戳： 41位，够用69年多
      */
-    private final static long SEQUENCE_BIT = 12; //序列号占用的位数
+    private final static long SEQUENCE_BIT = 7; //序列号占用的位数
     private final static long MACHINE_BIT = 5;   //机器标识占用的位数
-    private final static long DATACENTER_BIT = 5;//数据中心占用的位数
+    private final static long DATACENTER_BIT = 0;//数据中心占用的位数
 
     /**
      * 每一部分的最大值
@@ -100,14 +103,5 @@ public class Snowflake {
 
     private long getNewstmp() {
         return System.currentTimeMillis();
-    }
-
-    public static void main(String[] args) {
-        Snowflake snowFlake = new Snowflake(2, 3);
-
-        for (int i = 0; i < (1 << 12); i++) {
-            System.out.println(snowFlake.nextId());
-        }
-
     }
 }
