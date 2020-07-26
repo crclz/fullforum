@@ -8,14 +8,19 @@ public class QArticle {
     public String text;
     public String userId;
 
-    public QArticle(Long id, String title, String text, Long userId) {
+    public Quser user;
+
+    public QArticle(Long id, String title, String text, Long userId, Quser user) {
         this.id = id.toString();
         this.title = title;
         this.text = text;
         this.userId = userId.toString();
+
+        this.user = user;
     }
 
-    public static QArticle convert(Article p) {
-        return p == null ? null : new QArticle(p.getId(), p.getTitle(), p.getText(), p.getUserId());
+    public static QArticle convert(Article p, Quser user) {
+        return p == null ? null :
+                new QArticle(p.getId(), p.getTitle(), p.getText(), p.getUserId(), user);
     }
 }

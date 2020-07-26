@@ -1,12 +1,14 @@
 package fullforum.controllers;
 
 import fullforum.data.models.Article;
+import fullforum.data.models.User;
 import fullforum.data.repos.ArticleRepository;
 import fullforum.data.repos.UserRepository;
 import fullforum.dto.in.CreateArticleModel;
 import fullforum.dto.in.PatchArticleModel;
 import fullforum.dto.out.IdDto;
 import fullforum.dto.out.QArticle;
+import fullforum.dto.out.Quser;
 import fullforum.errhand.ForbidException;
 import fullforum.errhand.NotFoundException;
 import fullforum.errhand.UnauthorizedException;
@@ -15,15 +17,21 @@ import fullforum.services.Snowflake;
 import org.hibernate.cfg.NotYetImplementedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.validation.Valid;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.websocket.server.PathParam;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("articles")
+@Validated// PathVariable and params auto validation
 public class ArticlesController {
     @Autowired
     Snowflake snowflake;
@@ -99,6 +107,43 @@ public class ArticlesController {
             return null;
         }
 
-        return QArticle.convert(article);
+        return QArticle.convert(article, null);
+    }
+
+
+    @PersistenceContext
+    EntityManager entityManager;
+
+    @GetMapping
+    public List<QArticle> getArticles(
+            @RequestParam Long userId,
+            @RequestParam String keyword,
+            @RequestParam @Min(0) int pageNo,
+            @RequestParam @Min(1) @Max(10) int pageSize
+    ) {
+        var query = entityManager.createQuery(
+                "select a, u from Article a join User u" +
+                        " on a.userId = u.id" +
+                        " where :userId is null OR a.userId = :userId" +
+                        " AND :keyword is null OR a.title like :expr")
+                .setParameter("userId", userId)
+                .setParameter("keyword", keyword)
+                .setParameter("expr", "%" + keyword + "%")
+                .setFirstResult(pageNo * pageSize)
+                .setMaxResults(pageSize);
+
+        var result = query.getResultList();
+        var data = new ArrayList<QArticle>();
+
+        for (var item : result) {
+            var objs = (Object[]) item;
+            var article = (Article) objs[0];
+            var user = (User) objs[1];
+
+            var qarticle = QArticle.convert(article, Quser.convert(user));
+            data.add(qarticle);
+        }
+
+        return data;
     }
 }

@@ -1,18 +1,24 @@
 package fullforum.controllers;
 
 import fullforum.data.models.Article;
+import fullforum.data.models.User;
 import fullforum.dependency.FakeAuth;
 import fullforum.BaseTest;
 import fullforum.data.repos.ArticleRepository;
 import fullforum.data.repos.UserRepository;
 import fullforum.dto.in.CreateArticleModel;
 import fullforum.dto.in.PatchArticleModel;
+import fullforum.dto.out.QArticle;
+import fullforum.dto.out.Quser;
 import fullforum.errhand.ForbidException;
 import fullforum.errhand.NotFoundException;
 import fullforum.errhand.UnauthorizedException;
+import fullforum.services.Snowflake;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.MockMvc;
+
+import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -172,6 +178,53 @@ public class ArticlesControllerTest extends BaseTest {
         assertThat(articleInfo.title).isEqualTo(article.getTitle());
         assertThat(articleInfo.text).isEqualTo(article.getText());
         assertThat(articleInfo.userId).isEqualTo(Long.toString(article.getUserId()));
+    }
+
+    // endregion
+
+
+    // region getArticlesTest
+
+    @Autowired
+    Snowflake snowflake;
+
+    @Test
+    void getArticles_simple_test() {
+        // Arrange
+        var a = new User(snowflake.nextId(), "aaaa", "asdadsada");
+        var b = new User(snowflake.nextId(), "bbbb", "adddddddddss");
+        userRepository.saveAll(Arrays.asList(a, b));
+
+        var a1 = new Article(snowflake.nextId(), "asdasd", "ad", a.getId());
+        var a2 = new Article(snowflake.nextId(), "ooooo", "ad", a.getId());
+        var b1 = new Article(snowflake.nextId(), "sdsd", "das", b.getId());
+        articleRepository.saveAll(Arrays.asList(a1, a2, b1));
+
+        // all articles of user A
+        var articles = articlesController.getArticles(a.getId(), null, 0, 10);
+        assertThat(articles).hasSize(2);
+
+        var articleA1 = articles.stream().filter(p -> p.id.equals(a1.getId().toString()))
+                .findFirst().orElse(null);
+        assertQArticleConsistsWith(articleA1, a1, a);
+
+        var articleA2 = articles.stream().filter(p -> p.id.equals(a2.getId().toString()))
+                .findFirst().orElse(null);
+        assertQArticleConsistsWith(articleA2, a2, a);
+
+        // user A and title keyword = 'ooo'
+        articles = articlesController.getArticles(a.getId(), "ooo", 0, 10);
+        assertThat(articles).hasSize(1);
+        var ar0 = articles.get(0);
+        assertQArticleConsistsWith(ar0, a2, a);
+    }
+
+    void assertQArticleConsistsWith(QArticle q, Article article, User user) {
+        // TODO: QUser.convert should be tested
+        // TODO: QArticle.convert should be tested
+        assertThat(q).usingRecursiveComparison()
+                .isEqualTo(QArticle.convert(article, Quser.convert(user)));
+
     }
 
     // endregion
