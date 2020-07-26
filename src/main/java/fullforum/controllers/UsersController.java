@@ -2,6 +2,7 @@ package fullforum.controllers;
 
 import fullforum.data.repos.UserRepository;
 import fullforum.dto.out.IdDto;
+import fullforum.dto.out.Quser;
 import fullforum.errhand.*;
 import fullforum.services.IAuth;
 import fullforum.services.Snowflake;
@@ -76,5 +77,15 @@ public class UsersController {
             default:
                 throw new IllegalArgumentException("Unexpected status: " + status);
         }
+    }
+
+    @GetMapping("{id}")
+    public Quser getUserById(@PathVariable long id) {
+        var user = userRepository.findById(id).orElse(null);
+        if (user == null) {
+            return null;
+        }
+
+        return Quser.convert(user);
     }
 }

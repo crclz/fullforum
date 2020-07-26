@@ -154,4 +154,26 @@ class UsersControllerTest extends BaseTest {
         var userInDatabase = userRepository.getOne(auth.userId());
         org.assertj.core.api.Assertions.assertThat(userInDatabase.getPassword()).isEqualTo(model.password);
     }
+
+    // region getUserById test
+
+    @Test
+    void getUserById_return_null_when_user_not_exist() {
+        var user = usersController.getUserById(1);
+        assertThat(user).isNull();
+    }
+
+    @Test
+    void getUserById_return_user_info_when_user_exist() {
+        // Arrange
+        var userEntity = new User(1, "asda", "sdsdasdasdsa");
+        userRepository.save(userEntity);
+
+        // Act
+        var userInfo = usersController.getUserById(1);
+        assertThat(userInfo.getLongId()).isEqualTo(1);
+        assertThat(userInfo.username).isEqualTo(userEntity.getUsername());
+    }
+
+    // endregion
 }
