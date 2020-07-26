@@ -1,6 +1,6 @@
-package crclz.fullforum.dependency;
+package fullforum.dependency;
 
-import crclz.fullforum.services.IAuth;
+import fullforum.services.IAuth;
 
 public class FakeAuth implements IAuth {
 

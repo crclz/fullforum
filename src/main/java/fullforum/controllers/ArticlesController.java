@@ -1,13 +1,13 @@
-package crclz.fullforum.controllers;
+package fullforum.controllers;
 
-import crclz.fullforum.data.models.Article;
-import crclz.fullforum.data.repos.ArticleRepository;
-import crclz.fullforum.data.repos.UserRepository;
-import crclz.fullforum.dto.in.CreateArticleModel;
-import crclz.fullforum.dto.out.IdDto;
-import crclz.fullforum.errhand.UnauthorizedException;
-import crclz.fullforum.services.IAuth;
-import crclz.fullforum.services.Snowflake;
+import fullforum.data.models.Article;
+import fullforum.data.repos.ArticleRepository;
+import fullforum.data.repos.UserRepository;
+import fullforum.dto.in.CreateArticleModel;
+import fullforum.dto.out.IdDto;
+import fullforum.errhand.UnauthorizedException;
+import fullforum.services.IAuth;
+import fullforum.services.Snowflake;
 import org.hibernate.cfg.NotYetImplementedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,8 +38,9 @@ public class ArticlesController {
             throw new UnauthorizedException();
         }
 
-        var article=new Article()
+        var article = new Article(snowflake.nextId(), model.title, model.text, auth.userId());
+        articleRepository.save(article);
 
-        throw new NotYetImplementedException();
+        return new IdDto(article.getId());
     }
 }

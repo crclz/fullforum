@@ -1,4 +1,4 @@
-package crclz.fullforum.dto.in;
+package fullforum.dto.in;
 
 public class LoginModel {
     public String username;

@@ -1,6 +1,6 @@
-package crclz.fullforum.controllers;
+package fullforum.controllers;
 
-import crclz.fullforum.BaseTest;
+import fullforum.BaseTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -67,7 +67,7 @@ public class InnerContractTest extends BaseTest {
 
     @Test
     void out_dto_not_having_long() throws Exception {
-        String packageName = "crclz.fullforum.dto.out";
+        String packageName = "fullforum.dto.out";
         List<Class<?>> classList = new ArrayList<>();
         URL root = Thread.currentThread().getContextClassLoader().getResource(packageName.replace(".", "/"));
 

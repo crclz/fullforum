@@ -1,6 +1,6 @@
-package crclz.fullforum.data.models;
+package fullforum.data.models;
 
-import crclz.fullforum.data.RootEntity;
+import fullforum.data.RootEntity;
 
 import javax.persistence.Entity;
 

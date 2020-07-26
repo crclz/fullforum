@@ -1,6 +1,6 @@
-package crclz.fullforum;
+package fullforum;
 
-import crclz.fullforum.controllers.UsersController;
+import fullforum.controllers.UsersController;
 
 public class MetadataTest {
     void a() {

@@ -1,11 +1,11 @@
-package crclz.fullforum.controllers;
+package fullforum.controllers;
 
-import crclz.fullforum.dependency.FakeAuth;
-import crclz.fullforum.BaseTest;
-import crclz.fullforum.data.repos.ArticleRepository;
-import crclz.fullforum.data.repos.UserRepository;
-import crclz.fullforum.dto.in.CreateArticleModel;
-import crclz.fullforum.errhand.UnauthorizedException;
+import fullforum.dependency.FakeAuth;
+import fullforum.BaseTest;
+import fullforum.data.repos.ArticleRepository;
+import fullforum.data.repos.UserRepository;
+import fullforum.dto.in.CreateArticleModel;
+import fullforum.errhand.UnauthorizedException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.MockMvc;

@@ -1,4 +1,4 @@
-package crclz.fullforum.dto.in;
+package fullforum.dto.in;
 
 import javax.validation.constraints.Size;
 

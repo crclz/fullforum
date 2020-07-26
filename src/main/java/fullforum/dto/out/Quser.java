@@ -1,6 +1,6 @@
-package crclz.fullforum.dto.out;
+package fullforum.dto.out;
 
-import crclz.fullforum.data.models.User;
+import fullforum.data.models.User;
 
 public class Quser {
     public String id;

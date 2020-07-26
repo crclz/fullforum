@@ -1,6 +1,6 @@
-package crclz.fullforum.data.repos;
+package fullforum.data.repos;
 
-import crclz.fullforum.data.models.Article;
+import fullforum.data.models.Article;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ArticleRepository extends JpaRepository<Article, Long> {

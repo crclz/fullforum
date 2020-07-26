@@ -1,6 +1,6 @@
-package crclz.fullforum;
+package fullforum;
 
-import crclz.fullforum.dependency.FakeAuth;
+import fullforum.dependency.FakeAuth;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;

@@ -1,4 +1,4 @@
-package crclz.fullforum.dto.out;
+package fullforum.dto.out;
 
 public class IdDto {
     public String id;
