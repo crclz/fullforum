@@ -14,7 +14,7 @@ public class Article extends RootEntity {
     protected Article() {
     }
 
-    public Article(long id, String title, String text, Long userId) {
+    public Article(long id, String title, String text, long userId) {
         super(id);
         setTitle(title);
         setText(text);
