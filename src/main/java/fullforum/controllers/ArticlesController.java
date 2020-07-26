@@ -4,6 +4,7 @@ import fullforum.data.models.Article;
 import fullforum.data.repos.ArticleRepository;
 import fullforum.data.repos.UserRepository;
 import fullforum.dto.in.CreateArticleModel;
+import fullforum.dto.in.PatchArticleModel;
 import fullforum.dto.out.IdDto;
 import fullforum.errhand.ForbidException;
 import fullforum.errhand.NotFoundException;
@@ -12,8 +13,11 @@ import fullforum.services.IAuth;
 import fullforum.services.Snowflake;
 import org.hibernate.cfg.NotYetImplementedException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.validation.Valid;
 import javax.websocket.server.PathParam;
 
@@ -60,5 +64,30 @@ public class ArticlesController {
 
         // ok
         articleRepository.delete(article);
+    }
+
+    @PatchMapping("{id}")
+    public void patchArticle(@PathVariable long id, PatchArticleModel model) {
+        if (!auth.isLoggedIn()) {
+            throw new UnauthorizedException();
+        }
+
+        var article = articleRepository.findById(id).orElse(null);
+        if (article == null) {
+            throw new NotFoundException();
+        }
+        if (article.getUserId() != auth.userId()) {
+            throw new ForbidException();
+        }
+
+        // ok
+        if (model.title != null) {
+            article.setTitle(model.title);
+        }
+        if (model.text != null) {
+            article.setText(model.text);
+        }
+
+        articleRepository.save(article);
     }
 }
