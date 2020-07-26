@@ -1,11 +1,11 @@
-package fullforum.controllers;
+package crclz.fullforum.controllers;
 
-import fullforum.data.repos.UserRepository;
-import fullforum.dto.in.LoginModel;
-import fullforum.dto.out.Quser;
-import fullforum.errhand.BadRequestException;
-import fullforum.errhand.ErrorCode;
-import fullforum.services.IAuth;
+import crclz.fullforum.errhand.BadRequestException;
+import crclz.fullforum.services.IAuth;
+import crclz.fullforum.data.repos.UserRepository;
+import crclz.fullforum.dto.in.LoginModel;
+import crclz.fullforum.dto.out.Quser;
+import crclz.fullforum.errhand.ErrorCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

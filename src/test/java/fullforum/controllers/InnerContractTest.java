@@ -1,6 +1,6 @@
-package fullforum.controllers;
+package crclz.fullforum.controllers;
 
-import fullforum.BaseTest;
+import crclz.fullforum.BaseTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;

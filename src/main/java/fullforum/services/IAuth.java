@@ -1,4 +1,4 @@
-package fullforum.services;
+package crclz.fullforum.services;
 
 public interface IAuth {
     boolean isLoggedIn();

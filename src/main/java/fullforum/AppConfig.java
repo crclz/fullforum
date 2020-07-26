@@ -1,8 +1,8 @@
-package fullforum;
+package crclz.fullforum;
 
-import fullforum.data.repos.UserRepository;
-import fullforum.services.Auth;
-import fullforum.services.IAuth;
+import crclz.fullforum.data.repos.UserRepository;
+import crclz.fullforum.services.Auth;
+import crclz.fullforum.services.IAuth;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.context.annotation.RequestScope;

@@ -1,13 +1,14 @@
-package fullforum.controllers;
+package crclz.fullforum.controllers;
 
-import fullforum.dto.in.CreateUserModel;
-import fullforum.dto.out.IdDto;
-import fullforum.dto.in.PatchUserModel;
+import crclz.fullforum.data.repos.UserRepository;
+import crclz.fullforum.dto.out.IdDto;
+import crclz.fullforum.errhand.*;
+import crclz.fullforum.services.IAuth;
+import crclz.fullforum.services.Snowflake;
+import crclz.fullforum.dto.in.CreateUserModel;
+import crclz.fullforum.dto.in.PatchUserModel;
 import fullforum.errhand.*;
-import fullforum.services.IAuth;
-import fullforum.services.Snowflake;
-import fullforum.data.models.User;
-import fullforum.data.repos.UserRepository;
+import crclz.fullforum.data.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;

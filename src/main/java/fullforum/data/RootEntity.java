@@ -1,4 +1,4 @@
-package fullforum.data;
+package crclz.fullforum.data;
 
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;

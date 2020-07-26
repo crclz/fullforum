@@ -1,6 +1,6 @@
-package fullforum.services;
+package crclz.fullforum.services;
 
-import fullforum.data.repos.UserRepository;
+import crclz.fullforum.data.repos.UserRepository;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;

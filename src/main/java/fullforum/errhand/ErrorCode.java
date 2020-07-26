@@ -1,4 +1,4 @@
-package fullforum.errhand;
+package crclz.fullforum.errhand;
 
 public enum ErrorCode {
     UniqueViolation,

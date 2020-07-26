@@ -1,4 +1,4 @@
-package fullforum.errhand;
+package crclz.fullforum.errhand;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;

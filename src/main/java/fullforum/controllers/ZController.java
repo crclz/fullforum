@@ -1,4 +1,4 @@
-package fullforum.controllers;
+package crclz.fullforum.controllers;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
