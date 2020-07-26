@@ -108,7 +108,7 @@ public class ArticlesController {
             return null;
         }
 
-        return QArticle.convert(article, null);
+        return QArticle.convert(article, null, modelMapper);
     }
 
 
@@ -144,7 +144,7 @@ public class ArticlesController {
             var article = (Article) objs[0];
             var user = (User) objs[1];
 
-            var qarticle = QArticle.convert(article, Quser.convert(user, modelMapper));
+            var qarticle = QArticle.convert(article, Quser.convert(user, modelMapper), modelMapper);
             data.add(qarticle);
         }
 

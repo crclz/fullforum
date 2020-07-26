@@ -227,7 +227,7 @@ public class ArticlesControllerTest extends BaseTest {
         // TODO: QUser.convert should be tested
         // TODO: QArticle.convert should be tested
         assertThat(q).usingRecursiveComparison()
-                .isEqualTo(QArticle.convert(article, Quser.convert(user, modelMapper)));
+                .isEqualTo(QArticle.convert(article, Quser.convert(user, modelMapper), modelMapper));
 
     }
 

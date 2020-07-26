@@ -16,11 +16,4 @@ public class Quser {
 
         return mapper.map(user, Quser.class);
     }
-
-    public static void main(String[] args) {
-        var m = new ModelMapper();
-
-        var user = new User(1, "aaa", "asdsadsad");
-        var q = m.map(user, Quser.class);
-    }
 }
