@@ -156,4 +156,23 @@ public class ArticlesControllerTest extends BaseTest {
     }
 
     //endregion
+
+
+    // region getArticleById test
+
+    @Test
+    void getArticleById_return_article_info_when_article_exist() {
+        // Arrange
+        var article = new Article(1, "aaaa", "bsbdbbdbdbd", 1);
+        articleRepository.save(article);
+
+        // Act
+        var articleInfo = articlesController.getArticleById(1);
+        assertThat(articleInfo.id).isEqualTo(article.getId().toString());
+        assertThat(articleInfo.title).isEqualTo(article.getTitle());
+        assertThat(articleInfo.text).isEqualTo(article.getText());
+        assertThat(articleInfo.userId).isEqualTo(Long.toString(article.getUserId()));
+    }
+
+    // endregion
 }

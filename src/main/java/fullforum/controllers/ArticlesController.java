@@ -6,6 +6,7 @@ import fullforum.data.repos.UserRepository;
 import fullforum.dto.in.CreateArticleModel;
 import fullforum.dto.in.PatchArticleModel;
 import fullforum.dto.out.IdDto;
+import fullforum.dto.out.QArticle;
 import fullforum.errhand.ForbidException;
 import fullforum.errhand.NotFoundException;
 import fullforum.errhand.UnauthorizedException;
@@ -89,5 +90,15 @@ public class ArticlesController {
         }
 
         articleRepository.save(article);
+    }
+
+    @GetMapping("{id}")
+    public QArticle getArticleById(@PathVariable long id) {
+        var article = articleRepository.findById(id).orElse(null);
+        if (article == null) {
+            return null;
+        }
+
+        return QArticle.convert(article);
     }
 }
