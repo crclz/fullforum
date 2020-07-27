@@ -3,6 +3,10 @@ package fullforum.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+// 采用数据库自增主键会有一定的局限性，所以采用本地生成的主键
+// GUID也可以用于主键，但是GUID在地址栏里面看起来很丑，所以不采用
+// 所以采用snowflake算法，生成long主键
+
 /**
  * twitter的snowflake算法 -- java实现
  *

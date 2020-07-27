@@ -7,8 +7,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Arrays;
 
+/**
+ * 读取cookie来判断用户是否登录、并提供用户的id
+ */
 public class Auth implements IAuth {
+    /**
+     * -1 则代表未登录
+     */
     private long userId = -1;
+
+    /**
+     * 是否加载过
+     * Auth类采用懒加载，构造对象时不会去查询数据库去验证用户的密码
+     */
     private boolean loaded = false;
 
     private HttpServletRequest request;
