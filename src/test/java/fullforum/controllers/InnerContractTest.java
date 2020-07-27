@@ -19,11 +19,18 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
+/**
+ * 由于项目的主要测试手段是调用controller的对应方法，那么就会缺失一点东西。
+ * 这个测试类主要来测试这些缺失的东西
+ */
 @AutoConfigureMockMvc
 public class InnerContractTest extends BaseTest {
 
     @Autowired
     private MockMvc mockMvc;
+
+
+    // 接下来几个测试用例，都是来测试我们位于errhand包里的几个异常类能否被框架“翻译”为想要的返回数据
 
     @Test
     void badRequest_400() throws Exception {
@@ -58,6 +65,9 @@ public class InnerContractTest extends BaseTest {
                 .andExpect(status().isNotFound());
     }
 
+    /**
+     * 测试spring是否能够将输入数据转换为long
+     */
     @Test
     void input_model_convert_string_to_long_test() throws Exception {
         mockMvc.perform(post("/internal/long-test").contentType(MediaType.APPLICATION_JSON)
@@ -67,7 +77,7 @@ public class InnerContractTest extends BaseTest {
     }
 
     @Test
-    @Disabled("不管是毫秒时间戳还是snowflake id（已调整），暂时不会有超出js number范围（53位）的long")
+    @Disabled("不管是毫秒时间戳，还是snowflake id（已调整），暂时不会有超出js Number范围（53位）的long")
     void out_dto_not_having_long() throws Exception {
         String packageName = "fullforum.dto.out";
         List<Class<?>> classList = new ArrayList<>();

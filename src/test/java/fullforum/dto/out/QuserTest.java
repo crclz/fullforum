@@ -8,6 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * 测试代码是否能够正常工作
+ */
 class QuserTest extends BaseTest {
 
     @Autowired

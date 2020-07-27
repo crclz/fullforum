@@ -22,6 +22,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
+
+/**
+ * AccessController的测试由于涉及到cookie，就没有使用 TestServiceConfiguration
+ * 并且，这个测试集合里面，mockMvc被大量使用。其余测试里，mockMvc不作为主要测试手段。
+ */
 @TestPropertySource("classpath:unittest.properties")
 @Rollback
 @Transactional
@@ -62,6 +67,7 @@ public class AccessControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.username", equalTo(user.getUsername())))
                 .andExpect(jsonPath("$.id", hasToString(user.getId().toString())));
+        // （上一行）如果不把id转化为字符串来做比较的话，测试框架会认为1L不等于1
     }
 
     @Test

@@ -25,6 +25,10 @@ import static org.assertj.core.api.Assertions.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * 在一般的测试中，mockMvc只是少量使用，更多的时候是直接调用controller的方法。
+ * 它们的区别是：mockMvc能够覆盖更广的东西，例如路由参数、查询参数的annotation标记是否到位
+ */
 public class ArticlesControllerTest extends BaseTest {
     @Autowired
     ArticlesController articlesController;
